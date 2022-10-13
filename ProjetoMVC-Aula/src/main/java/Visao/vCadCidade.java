@@ -7,6 +7,7 @@ package Visao;
 import Controle.ctrlCidade;
 import java.awt.Component;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,15 +32,6 @@ public class vCadCidade extends javax.swing.JDialog {
         setStatusRegistro(FECHADO);
     }
     
-    private void setStatusRegistro(int status){
-        statusRegistro = status;
-        habilitarBotoes();
-        
-        if (status == INSERCAO || status == FECHADO){
-            limparCampos();
-        }
-    }
-    
     private void habilitarBotoes(){
         
         boolean habilitar = (statusRegistro == ABERTO || statusRegistro == FECHADO);
@@ -62,6 +54,24 @@ public class vCadCidade extends javax.swing.JDialog {
         txtNome.setText("");
         txtCep.setText("");
         cmbEstado.setSelectedIndex(0);
+    }
+    
+    private void setStatusRegistro(int status){
+        statusRegistro = status;
+        habilitarBotoes();
+        
+        if (status == INSERCAO || status == FECHADO){
+            limparCampos();
+        }
+    }
+    
+    private void PreencherTelaComObjetoRecuperado(ArrayList<String> Registro){
+        if (!Registro.get(0).equals("-1")){
+            txtCodigo.setText(Registro.get(0));
+            txtNome.setText(Registro.get(1));
+            txtCep.setText(Registro.get(2));
+            cmbEstado.setSelectedItem(Registro.get(3));
+        }
     }
 
     /**
@@ -107,6 +117,17 @@ public class vCadCidade extends javax.swing.JDialog {
         jButton9.setText(">>");
 
         jLabel1.setText("Código:");
+
+        txtCodigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCodigoFocusLost(evt);
+            }
+        });
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlNavegacaoLayout = new javax.swing.GroupLayout(pnlNavegacao);
         pnlNavegacao.setLayout(pnlNavegacaoLayout);
@@ -302,6 +323,29 @@ public class vCadCidade extends javax.swing.JDialog {
         
         setStatusRegistro(ABERTO);
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void txtCodigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCodigoFocusLost
+        int codigoAtual = Integer.parseInt(txtCodigo.getText());
+        
+        if (codigoAtual > 0){
+            ctrlCidade controllerCidade = new ctrlCidade();
+            ArrayList<String> Registro = controllerCidade.RecuperaObjeto(codigoAtual);
+            
+            if (!Registro.get(0).equals("-1")){
+                PreencherTelaComObjetoRecuperado(Registro);                
+                setStatusRegistro(ABERTO);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Registro não encontrado");
+                setStatusRegistro(FECHADO);
+            }
+        }
+    }//GEN-LAST:event_txtCodigoFocusLost
+
+    private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            txtNome.requestFocus();
+        }
+    }//GEN-LAST:event_txtCodigoKeyPressed
 
     /**
      * @param args the command line arguments
