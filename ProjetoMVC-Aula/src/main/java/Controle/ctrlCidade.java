@@ -26,4 +26,19 @@ public class ctrlCidade {
         this.objCidade.Salvar();
         return this.objCidade.getCodigo();
     }
+    
+    public ArrayList<String> ConverterObjetoParaArray(){
+        ArrayList<String> vetCampos = new ArrayList<>();
+        vetCampos.add(String.valueOf(this.objCidade.getCodigo()));
+        vetCampos.add(this.objCidade.getNome());
+        vetCampos.add(this.objCidade.getCep());
+        vetCampos.add(this.objCidade.getEstado());
+        
+        return vetCampos;
+    }
+    
+    public ArrayList<String> RecuperaObjeto(int Codigo){
+        this.objCidade.RecuperaObjeto(Codigo);
+        return ConverterObjetoParaArray();
+    }
 }
