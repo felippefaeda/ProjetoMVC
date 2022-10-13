@@ -62,4 +62,12 @@ public class Cidade {
     public void Salvar(){
         CidadeDAO.Salvar(this);
     }
+    
+    public void RecuperaObjeto(int Codigo){
+        Cidade cidadeTemp = CidadeDAO.RecuperarCidade(Codigo);
+        this.setCodigo(cidadeTemp.getCodigo());
+        this.setNome(cidadeTemp.getNome());
+        this.setCep(cidadeTemp.getCep());
+        this.setEstado(cidadeTemp.getEstado());
+    }
 }
