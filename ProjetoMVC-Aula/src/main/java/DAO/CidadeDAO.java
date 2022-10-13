@@ -73,4 +73,42 @@ public class CidadeDAO {
         }            
     }
     
+    public static Cidade RecuperarCidade(int iCod){
+        Connection conexao = FabricaConexao.getConnection();
+        
+        Cidade cidadeRecuperada = new Cidade();
+        Statement consulta = null;
+        ResultSet resultado = null;
+        
+        String sql = "select * from cidade where codigo = " + iCod;
+        
+        try {
+            consulta = conexao.createStatement();
+            resultado = consulta.executeQuery(sql);
+            
+            resultado.next();
+            
+            if (resultado.getRow() == 1){
+                
+                cidadeRecuperada.setCodigo(resultado.getInt("CODIGO"));
+                cidadeRecuperada.setNome(resultado.getString("NOME"));
+                cidadeRecuperada.setEstado(resultado.getString("ESTADO"));
+                cidadeRecuperada.setCep(resultado.getString("CEP"));
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao recuperar cidade: " + e.getMessage());
+        } finally {
+            try {
+                consulta.close();
+                resultado.close();
+                conexao.close(); 
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao encerrar conexão na função RecuperarCidade(): " + e.getMessage());
+            }
+        }
+        
+        return cidadeRecuperada;
+    }
+    
 }
