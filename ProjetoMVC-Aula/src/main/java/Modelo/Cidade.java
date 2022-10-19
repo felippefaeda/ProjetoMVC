@@ -70,4 +70,9 @@ public class Cidade {
         this.setCep(cidadeTemp.getCep());
         this.setEstado(cidadeTemp.getEstado());
     }
+    
+    public void RecuperaObjetoNavegacao(int Opcao, int CodAtual){
+        int CodigoNav = CidadeDAO.PegaCodigoPelaNavegacao(Opcao, CodAtual);
+        RecuperaObjeto(CodigoNav);
+    }
 }

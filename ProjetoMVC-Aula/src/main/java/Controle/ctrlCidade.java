@@ -41,4 +41,9 @@ public class ctrlCidade {
         this.objCidade.RecuperaObjeto(Codigo);
         return ConverterObjetoParaArray();
     }
+    
+    public ArrayList<String> RecuperaObjetoNavegacao(int Opcao, int Codigo){
+        this.objCidade.RecuperaObjetoNavegacao(Opcao, Codigo);
+        return ConverterObjetoParaArray();
+    }
 }

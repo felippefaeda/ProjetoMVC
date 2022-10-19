@@ -73,6 +73,19 @@ public class vCadCidade extends javax.swing.JDialog {
             cmbEstado.setSelectedItem(Registro.get(3));
         }
     }
+    
+    private void navegarEntreRegistros(int opcao){
+        
+        int codigoAtual = Integer.parseInt(txtCodigo.getText());
+        
+        ctrlCidade controllerCidade = new ctrlCidade();
+        ArrayList<String> Registro = controllerCidade.RecuperaObjetoNavegacao(opcao, codigoAtual);
+        
+        PreencherTelaComObjetoRecuperado(Registro);
+        txtNome.requestFocus();
+        
+        setStatusRegistro(ABERTO);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,10 +97,10 @@ public class vCadCidade extends javax.swing.JDialog {
     private void initComponents() {
 
         pnlNavegacao = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        btnPrimeiro = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+        btnProximo = new javax.swing.JButton();
+        btnUltimo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
@@ -108,13 +121,33 @@ public class vCadCidade extends javax.swing.JDialog {
 
         pnlNavegacao.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton6.setText("<<");
+        btnPrimeiro.setText("<<");
+        btnPrimeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrimeiroActionPerformed(evt);
+            }
+        });
 
-        jButton7.setText("<");
+        btnAnterior.setText("<");
+        btnAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorActionPerformed(evt);
+            }
+        });
 
-        jButton8.setText(">");
+        btnProximo.setText(">");
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximoActionPerformed(evt);
+            }
+        });
 
-        jButton9.setText(">>");
+        btnUltimo.setText(">>");
+        btnUltimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUltimoActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Código:");
 
@@ -139,13 +172,13 @@ public class vCadCidade extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6)
+                .addComponent(btnPrimeiro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAnterior, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnProximo, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton9)
+                .addComponent(btnUltimo)
                 .addContainerGap())
         );
         pnlNavegacaoLayout.setVerticalGroup(
@@ -153,10 +186,10 @@ public class vCadCidade extends javax.swing.JDialog {
             .addGroup(pnlNavegacaoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlNavegacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9)
+                    .addComponent(btnPrimeiro)
+                    .addComponent(btnAnterior)
+                    .addComponent(btnProximo)
+                    .addComponent(btnUltimo)
                     .addComponent(jLabel1)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -347,6 +380,22 @@ public class vCadCidade extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtCodigoKeyPressed
 
+    private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
+        navegarEntreRegistros(0);
+    }//GEN-LAST:event_btnPrimeiroActionPerformed
+
+    private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
+        navegarEntreRegistros(1);
+    }//GEN-LAST:event_btnAnteriorActionPerformed
+
+    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
+        navegarEntreRegistros(2);
+    }//GEN-LAST:event_btnProximoActionPerformed
+
+    private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
+        navegarEntreRegistros(3);
+    }//GEN-LAST:event_btnUltimoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -390,16 +439,16 @@ public class vCadCidade extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnPrimeiro;
+    private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnUltimo;
     private javax.swing.JComboBox<String> cmbEstado;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -18,6 +18,55 @@ import javax.swing.JOptionPane;
  */
 public class CidadeDAO {
     
+    public static final int cNavPrimeiro = 0;
+    public static final int cNavAnterior = 1;
+    public static final int cNavProximo = 2;
+    public static final int cNavUltimo = 3;
+    
+    public static int PegaCodigoPelaNavegacao(int iOpcao, int icodigoAtual){
+        Connection conexao = FabricaConexao.getConnection();
+        
+        Statement consulta = null;
+        ResultSet resultado = null;
+        int CodigoEncontrado = -1;
+        
+        String sql = "";
+                
+        switch(iOpcao){
+            case cNavPrimeiro: 
+                sql = "select min(CODIGO) as CODIGO from CIDADE"; 
+                break;
+            case cNavAnterior: 
+                sql = "select max(CODIGO) as CODIGO from CIDADE where CODIGO < " + String.valueOf(icodigoAtual); 
+                break;
+            case cNavProximo: 
+                sql = "select min(CODIGO) as CODIGO from CIDADE where CODIGO > " + String.valueOf(icodigoAtual); 
+                break;
+            case cNavUltimo: 
+                sql = "select max(CODIGO) as CODIGO from CIDADE"; 
+                break;
+        }
+        
+        try {
+            consulta = (Statement)conexao.createStatement();
+            resultado = consulta.executeQuery(sql);
+            resultado.next();
+            CodigoEncontrado = resultado.getInt("CODIGO");
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao executar SQL de navegação: " + e.getMessage());
+        } finally {
+            try {
+               consulta.close();
+               conexao.close(); 
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao encerrar conexão na função PegaCodigoPelaNavegacao(): " + e.getMessage());
+            }  
+        }
+        
+        return CodigoEncontrado;
+    }
+    
     public static int ProximoCodigo(){
         Connection conexao = FabricaConexao.getConnection();
         
