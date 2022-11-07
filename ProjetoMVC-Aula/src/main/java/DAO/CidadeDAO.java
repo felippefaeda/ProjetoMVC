@@ -37,10 +37,12 @@ public class CidadeDAO {
                 sql = "select min(CODIGO) as CODIGO from CIDADE"; 
                 break;
             case cNavAnterior: 
-                sql = "select max(CODIGO) as CODIGO from CIDADE where CODIGO < " + String.valueOf(icodigoAtual); 
+                sql = "select max(CODIGO) as CODIGO from CIDADE where CODIGO < " 
+                        + String.valueOf(icodigoAtual); 
                 break;
             case cNavProximo: 
-                sql = "select min(CODIGO) as CODIGO from CIDADE where CODIGO > " + String.valueOf(icodigoAtual); 
+                sql = "select min(CODIGO) as CODIGO from CIDADE where CODIGO > " 
+                        + String.valueOf(icodigoAtual); 
                 break;
             case cNavUltimo: 
                 sql = "select max(CODIGO) as CODIGO from CIDADE"; 
@@ -158,6 +160,54 @@ public class CidadeDAO {
         }
         
         return cidadeRecuperada;
+    }
+    
+    public static void Atualizar(Cidade cidade){
+        Connection conexao = FabricaConexao.getConnection();
+        
+        PreparedStatement atualizaSt = null;
+        
+        String sql = "update cidade set nome = ?, estado = ?, cep = ? where codigo = ?";
+        
+        try {
+            atualizaSt = conexao.prepareStatement(sql);
+            atualizaSt.setString(1, cidade.getNome());
+            atualizaSt.setString(2, cidade.getEstado());
+            atualizaSt.setString(3, cidade.getCep());
+            atualizaSt.setInt(4, cidade.getCodigo());
+            atualizaSt.executeUpdate();            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar cidade: " + e.getMessage());
+        } finally {
+            try {
+                atualizaSt.close();
+                conexao.close(); 
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao encerrar conexão na função Atualizar(): " + e.getMessage());
+            }
+        }
+    }
+        
+    public static void Excluir(int iCod){
+        Connection conexao = FabricaConexao.getConnection();
+        
+        PreparedStatement excluiSt = null;
+        
+        String sql = "delete from cidade where codigo = " + iCod;
+        
+        try {
+            excluiSt = conexao.prepareStatement(sql);
+            excluiSt.executeUpdate();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir cidade: " + e.getMessage());
+        } finally {
+            try {
+                excluiSt.close();
+                conexao.close(); 
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao encerrar conexão na função Excluir(): " + e.getMessage());
+            }
+        }
     }
     
 }

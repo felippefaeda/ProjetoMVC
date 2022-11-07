@@ -79,7 +79,8 @@ public class vCadCidade extends javax.swing.JDialog {
         int codigoAtual = Integer.parseInt(txtCodigo.getText());
         
         ctrlCidade controllerCidade = new ctrlCidade();
-        ArrayList<String> Registro = controllerCidade.RecuperaObjetoNavegacao(opcao, codigoAtual);
+        ArrayList<String> Registro = controllerCidade.RecuperaObjetoNavegacao(opcao, 
+                codigoAtual);
         
         PreencherTelaComObjetoRecuperado(Registro);
         txtNome.requestFocus();
@@ -199,11 +200,33 @@ public class vCadCidade extends javax.swing.JDialog {
 
         jLabel2.setText("Nome");
 
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
+
         jLabel3.setText("CEP");
+
+        txtCep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCepKeyPressed(evt);
+            }
+        });
 
         jLabel4.setText("Estado");
 
         cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MG", "SP", "ES", "RJ" }));
+        cmbEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbEstadoActionPerformed(evt);
+            }
+        });
+        cmbEstado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbEstadoKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -266,6 +289,11 @@ public class vCadCidade extends javax.swing.JDialog {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -334,7 +362,19 @@ public class vCadCidade extends javax.swing.JDialog {
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        if (statusRegistro == INSERCAO){
+            setStatusRegistro(FECHADO);
+        } else if (statusRegistro == EDICAO){
+            // Recarregar o registro
+            int codigoAtual = Integer.parseInt(txtCodigo.getText());
+        
+            ctrlCidade controllerCidade = new ctrlCidade();
+            ArrayList<String> Registro = controllerCidade.RecuperaObjeto(codigoAtual);
+
+            PreencherTelaComObjetoRecuperado(Registro); 
+            
+            setStatusRegistro(ABERTO);
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -351,7 +391,7 @@ public class vCadCidade extends javax.swing.JDialog {
             codigoNovo = ControllerCidade.Salvar(Registro);
             txtCodigo.setText(String.valueOf(codigoNovo));
         } else if (statusRegistro == EDICAO) {
-            // Ainda será implementado a edição
+            ControllerCidade.Atualizar(Registro);
         }
         
         setStatusRegistro(ABERTO);
@@ -395,6 +435,43 @@ public class vCadCidade extends javax.swing.JDialog {
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
         navegarEntreRegistros(3);
     }//GEN-LAST:event_btnUltimoActionPerformed
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        if (statusRegistro == ABERTO){
+            setStatusRegistro(EDICAO);
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void txtCepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCepKeyPressed
+        if (statusRegistro == ABERTO){
+            setStatusRegistro(EDICAO);
+        }
+    }//GEN-LAST:event_txtCepKeyPressed
+
+    private void cmbEstadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbEstadoKeyPressed
+        if (statusRegistro == ABERTO){
+            setStatusRegistro(EDICAO);
+        }
+    }//GEN-LAST:event_cmbEstadoKeyPressed
+
+    private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
+        if (statusRegistro == ABERTO){
+            setStatusRegistro(EDICAO);
+        }
+    }//GEN-LAST:event_cmbEstadoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (statusRegistro == ABERTO){
+            
+            int podeExcluir = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja excluir o registro?", "Meu Programa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            
+            if (podeExcluir == 0){
+                ctrlCidade controllerCidade = new ctrlCidade();
+                controllerCidade.Excluir(Integer.parseInt(txtCodigo.getText()));
+                setStatusRegistro(FECHADO);
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments

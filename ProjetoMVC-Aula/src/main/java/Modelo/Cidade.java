@@ -63,6 +63,14 @@ public class Cidade {
         CidadeDAO.Salvar(this);
     }
     
+    public void Atualizar(){
+        CidadeDAO.Atualizar(this);
+    }
+    
+    public void Excluir(int Chave){
+        CidadeDAO.Excluir(Chave);
+    }
+    
     public void RecuperaObjeto(int Codigo){
         Cidade cidadeTemp = CidadeDAO.RecuperarCidade(Codigo);
         this.setCodigo(cidadeTemp.getCodigo());

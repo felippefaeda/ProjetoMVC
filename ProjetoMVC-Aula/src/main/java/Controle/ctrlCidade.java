@@ -46,4 +46,18 @@ public class ctrlCidade {
         this.objCidade.RecuperaObjetoNavegacao(Opcao, Codigo);
         return ConverterObjetoParaArray();
     }
+    
+    public void Atualizar(ArrayList<String> pLista){
+        this.objCidade.setCodigo(Integer.valueOf(pLista.get(0)));
+        this.objCidade.setNome(pLista.get(1));
+        this.objCidade.setCep(pLista.get(2));
+        this.objCidade.setEstado(pLista.get(3));
+        
+        this.objCidade.Atualizar();
+    }
+    
+    public void Excluir(int Chave){
+        this.objCidade.setCodigo(Chave);
+        this.objCidade.Excluir(Chave);
+    }
 }
