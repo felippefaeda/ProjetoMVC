@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -210,4 +211,39 @@ public class CidadeDAO {
         }
     }
     
+    public static ArrayList<Cidade> RecuperaObjetos(String pCampo, String pValor){
+        Connection conexao = FabricaConexao.getConnection();
+        
+        ArrayList<Cidade> cidades = new ArrayList<>();
+        Statement consulta = null;
+        ResultSet resultado = null;
+        
+        String sql = "select * from CIDADE where " + pCampo + " like '%" + pValor + "%'";      
+        
+        try {
+            consulta = conexao.createStatement();
+            resultado = consulta.executeQuery(sql);
+            
+            while(resultado.next()){
+                Cidade cidadeTemp = new Cidade();
+                cidadeTemp.setCodigo(resultado.getInt("CODIGO"));
+                cidadeTemp.setNome(resultado.getString("NOME"));
+                cidadeTemp.setEstado(resultado.getString("ESTADO"));
+                cidadeTemp.setCep(resultado.getString("CEP"));
+                cidades.add(cidadeTemp);
+            }            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao recuperar cidades: " + e.getMessage() + "\n" + sql);
+        } finally {
+            try {
+                consulta.close();
+                resultado.close();
+                conexao.close(); 
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro ao encerrar conexão na função RecuperaObjetos(): " + e.getMessage());
+            }
+        }
+        
+        return cidades;        
+    }
 }

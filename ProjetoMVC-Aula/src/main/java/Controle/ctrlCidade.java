@@ -6,6 +6,8 @@ package Controle;
 
 import Modelo.Cidade;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -59,5 +61,28 @@ public class ctrlCidade {
     public void Excluir(int Chave){
         this.objCidade.setCodigo(Chave);
         this.objCidade.Excluir(Chave);
+    }
+    
+    public DefaultTableModel PesquisaObjeto(ArrayList<String> Parametros, DefaultTableModel ModeloTabela){
+        String Campo = Parametros.get(0);
+        String Valor = Parametros.get(1);
+        
+        ArrayList<Cidade> Cidades = this.objCidade.RecuperaObjetos(Campo, Valor);
+        
+        Vector<String> vetVetor;
+        Cidade objCidadeBuffer;
+        
+        for (int i = 0; i < Cidades.size(); i++) {
+            vetVetor = new Vector<>();
+            objCidadeBuffer = Cidades.get(i);
+            
+            vetVetor.addElement(String.valueOf(objCidadeBuffer.getCodigo()));
+            vetVetor.addElement(objCidadeBuffer.getNome());
+            vetVetor.addElement(objCidadeBuffer.getEstado());
+            vetVetor.addElement(objCidadeBuffer.getCep());
+            ModeloTabela.addRow(vetVetor);
+        }
+        
+        return ModeloTabela;
     }
 }

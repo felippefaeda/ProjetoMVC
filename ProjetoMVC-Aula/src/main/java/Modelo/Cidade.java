@@ -5,6 +5,7 @@
 package Modelo;
 
 import DAO.CidadeDAO;
+import java.util.ArrayList;
 
 /**
  *
@@ -82,5 +83,22 @@ public class Cidade {
     public void RecuperaObjetoNavegacao(int Opcao, int CodAtual){
         int CodigoNav = CidadeDAO.PegaCodigoPelaNavegacao(Opcao, CodAtual);
         RecuperaObjeto(CodigoNav);
+    }
+    
+    public ArrayList<Cidade> RecuperaObjetos(String pCampo, String pValor){
+        
+        String NomeCampo = "";
+        
+        if (pCampo.equalsIgnoreCase("Código")){
+            NomeCampo = "CODIGO";
+        } else if (pCampo.equalsIgnoreCase("Nome")){
+            NomeCampo = "NOME";
+        } else if (pCampo.equalsIgnoreCase("Cep")){
+            NomeCampo = "CEP";
+        } else if (pCampo.equalsIgnoreCase("Sigla Estado")){
+            NomeCampo = "ESTADO";
+        }
+        
+        return CidadeDAO.RecuperaObjetos(NomeCampo, pValor);
     }
 }

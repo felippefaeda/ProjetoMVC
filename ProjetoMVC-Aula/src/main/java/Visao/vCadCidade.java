@@ -21,7 +21,8 @@ public class vCadCidade extends javax.swing.JDialog {
     private static final int EDICAO = 2;
     
     private static int statusRegistro;
-
+    private int RetornoConsulta;
+    
     /**
      * Creates new form vCadCidade
      */
@@ -86,6 +87,13 @@ public class vCadCidade extends javax.swing.JDialog {
         txtNome.requestFocus();
         
         setStatusRegistro(ABERTO);
+    }
+    
+    public void setRetornoConsulta(int RetornoConsulta){
+        this.RetornoConsulta = RetornoConsulta;
+        this.txtCodigo.setText(String.valueOf(RetornoConsulta));
+        this.txtNome.requestFocus();
+        txtCodigoFocusLost(null);
     }
 
     /**
@@ -354,7 +362,7 @@ public class vCadCidade extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        new vPesqCidade(null, true).setVisible(true);
+        new vPesqCidade(null, true, this).setVisible(true);
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
